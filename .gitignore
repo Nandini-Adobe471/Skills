@@ -1,0 +1,8 @@
+# Working files (generated guides, review viewers, eval runs)
+eds-block-guide-workspace/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+node_modules/

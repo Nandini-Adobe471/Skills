@@ -1,0 +1,43 @@
+{
+  "skill_name": "eds-block-guide",
+  "notes": "Repo under test is the Adobe Experience League 'exlm' EDS project (Universal Editor authoring). Merged skill: catalog/discovery + change tracking, fuzzy id resolution, conditional-field handling, dual-audience guides (MD + docx).",
+  "repo_path": "C:\\Users\\hcl40471\\AppData\\Local\\Temp\\exlm-repo",
+  "evals": [
+    {
+      "id": 0,
+      "name": "catalog-discovery",
+      "prompt": "What blocks can I use in our EDS project at C:\\Users\\hcl40471\\AppData\\Local\\Temp\\exlm-repo? Show me the list.",
+      "expected_output": "Runs blocks.js catalog and presents a numbered Title (id) — Group list of all blocks. If a snapshot exists, leads with NEW/UPDATED and says how many changed; on first run notes there's no change history yet.",
+      "files": [],
+      "expectations": [
+        "The catalog was produced via the blocks.js engine (not hand-parsed JSON).",
+        "The response lists blocks as 'Title (id) — Group' and covers the full set (~130+).",
+        "NEW/UPDATED blocks are surfaced first with a count, or first-run is noted."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "detailed-teaser-conditional-fields",
+      "prompt": "Write an authoring guide for the detailed-teaser block in C:\\Users\\hcl40471\\AppData\\Local\\Temp\\exlm-repo, as markdown and a Word doc. Make sure authors understand which fields only show up sometimes.",
+      "expected_output": "A .md and .docx dual-audience guide. The Authoring section flags conditional fields with 'Shown only when …' (e.g. First CTA Background Color shown only when First CTA Type is Custom). Variants cover Theme/Alignment/Background Color; Technical reference maps fields to DOM.",
+      "files": [],
+      "expectations": [
+        "A Markdown guide and a valid .docx were created.",
+        "Conditional fields are flagged with a 'shown only when' note (e.g. CTA Background Color when CTA Type is Custom).",
+        "Contains all four sections and the field->DOM technical mapping.",
+        "The Variants section documents the Theme, Alignment, and Background Color style groups."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "fuzzy-block-name",
+      "prompt": "document the 'detaild teaser' block for authors (repo C:\\Users\\hcl40471\\AppData\\Local\\Temp\\exlm-repo) — md + docx",
+      "expected_output": "Recognizes the misspelling via fuzzy suggestions from blocks.js (detailed-teaser), confirms/uses the right block, and produces the guide pair.",
+      "files": [],
+      "expectations": [
+        "The misspelled id is resolved to detailed-teaser using the engine's fuzzy suggestions.",
+        "A Markdown guide and a valid .docx were created for detailed-teaser."
+      ]
+    }
+  ]
+}
