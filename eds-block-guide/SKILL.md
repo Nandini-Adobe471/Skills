@@ -143,13 +143,20 @@ accordion, tabs and carousel", "do the 3 new ones", or a multi-select in the pic
 When they do, produce a **separate guide pair per block**, and extract every spec in one
 `show a b c` call so each config file is read once. Report all the files at the end.
 
-**Build the picker from the live engine every time — never hard-code the block list.**
-Always populate the picker's rows (and their Status tags) from a fresh
-`node <skill>/scripts/blocks.js catalog --json` (use `--peek` on first render; use the
-`REFRESH=1` catalog output after "Check for updates"). Embedding a stale, hand-written
-list makes different sessions show different blocks and miss newly added ones — the
-catalog count changes as EXLM changes (e.g. it can be 133 one day, 136 the next). Read
-the engine, then render.
+**Render the picker from the bundled script — do NOT hand-write it.** The picker widget
+must look identical in every session, so it is produced by a fixed renderer with the
+live catalog injected:
+
+- First render: run `node <skill>/scripts/render_picker.js` and pass its **stdout
+  verbatim** to the visualization tool (`show_widget`) as `widget_code`. Don't edit the
+  markup; the script already includes search, 10/page pagination, the checkbox column,
+  Status, the Selected-chips row, and the Check-for-updates button.
+- After "Check for updates": run `node <skill>/scripts/render_picker.js --checked`
+  (it does the `REFRESH=1` catalog and shows the New/Updated result), again passing
+  stdout verbatim.
+
+This guarantees a consistent UI and always-current block list (the catalog count changes
+as EXLM changes — e.g. 133 one day, 136 the next). Never embed a hand-written block list.
 
 **Picker columns (when using a widget list).** Columns with proper headings:
 **Block**, **ID**, **Group** (wide enough to show "Default Content" in full), and
