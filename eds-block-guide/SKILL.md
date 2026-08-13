@@ -184,7 +184,8 @@ Picker behavior:
   **Check for updates** (which `sendPrompt("check for updates")` → you re-run the catalog
   with `REFRESH=1` and re-render), show the result: *"Checked just now — N new, M
   updated"* (naming them) or *"no blocks are new or changed."* Don't show an
-  "already have a guide" count.
+  "already have a guide" count. **Clicking Check for updates also clears the current
+  selection** — the refreshed list starts with nothing selected.
 
 The **"Check for updates"** button sits by the status strip.
 

@@ -93,7 +93,7 @@ chips.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)toggle
 document.getElementById('q').addEventListener('input',e=>{term=e.target.value.toLowerCase().trim();page=1;render();});
 document.getElementById('prev').addEventListener('click',()=>{if(page>1){page--;render();}});
 document.getElementById('next').addEventListener('click',()=>{const pages=Math.max(1,Math.ceil(filtered().length/SIZE));if(page<pages){page++;render();}});
-document.getElementById('refresh').addEventListener('click',()=>sendPrompt("check for updates"));
+document.getElementById('refresh').addEventListener('click',()=>{sel.clear();render();sendPrompt("check for updates");});
 gen.addEventListener('click',()=>{const ids=[...sel];if(!ids.length)return;sendPrompt("document the "+ids.join(', ')+" block"+(ids.length>1?"s":"")+" as markdown and Word");});
 whatsnew();render();
 </script>`;
