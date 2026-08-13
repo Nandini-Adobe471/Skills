@@ -230,10 +230,11 @@ fall back to a plain-text question if no widget tool is available.
 For **multiple blocks**, present each draft the same way (or, if the user prefers, offer
 one combined review) before saving anything.
 
-### 5. Ask before saving, then write the files
+### 5. Save on the Save action — directly, no confirmation
 
-When the user is happy, **ask whether to save** ("Shall I save it as Markdown + Word?")
-and, if useful, where. On confirmation:
+**A button click (or an explicit "save …" request) IS the confirmation — do NOT ask
+"shall I save?" or otherwise re-prompt.** The moment the user chooses Save, just write
+the files:
 
 1. Write the Markdown to `<id>-authoring-guide.md`.
 2. Build the Word doc:
@@ -241,7 +242,10 @@ and, if useful, where. On confirmation:
    (Dependency-free, offline. Keep tables as GitHub pipe tables so they become real Word
    tables.)
 
-If the user says not to save, leave it as an on-screen draft — don't write files.
+Same principle for every widget button — **the click starts the task immediately** (no
+"on it", no confirmation question): Generate → generate; Save → save; Check for updates →
+refresh. The only button that needs follow-up input is Edit (the user still types what to
+change). Never leave the user waiting on a confirmation after a click.
 
 ### 6. Deliver (silently)
 
