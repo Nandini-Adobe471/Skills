@@ -157,10 +157,21 @@ the engine, then render.
 (No "Guide?" column.)
 
 Picker behavior:
-- **Whole row toggles selection** — clicking anywhere on a row checks/unchecks it and
-  highlights it; the checkbox reflects the state.
+- **Search + pagination.** A search box at the top filters by **name only** (placeholder
+  "Search blocks by name"); show **10 blocks per page** with Prev / Next and a "Page X of
+  Y" counter. Nothing is truncated — every block is reachable via search/paging.
+- **Selection = the checkbox only.** Clicking anywhere on a row toggles that row's
+  checkbox. Do NOT shade/highlight the whole row on selection, and never let the
+  checkbox disappear — the ticked checkbox is the single, always-visible indicator.
+  Use **outline** Tabler icons for it (`ti-square` unchecked, `ti-square-check` checked)
+  — the `-filled` variants (`ti-square-check-filled`) are NOT loaded and render blank.
 - **Multi-select**; the **Generate** button is **disabled until at least one block is
   selected**, and reads "Generate N guide(s)" once blocks are picked.
+- **Show the current selection** — render the picked blocks as a row of removable chips
+  (e.g. "Selected (N): [Accordion ×] [Tabs ×] …") so the user always sees which blocks
+  they've chosen for authoring; clicking a chip's × deselects it. Hide the row when
+  nothing is selected. When Generate then runs multiple blocks, also name them in the
+  guide flow.
 - **Two-stage status message** in the top strip: on first load show *"Showing the cached
   list. Click Check for updates to pull the latest from EXLM."* After the user clicks
   **Check for updates** (which `sendPrompt("check for updates")` → you re-run the catalog
@@ -230,11 +241,11 @@ fall back to a plain-text question if no widget tool is available.
 For **multiple blocks**, present each draft the same way (or, if the user prefers, offer
 one combined review) before saving anything.
 
-### 5. Save on the Save action — directly, no confirmation
+### 5. Confirm before saving, then write the files
 
-**A button click (or an explicit "save …" request) IS the confirmation — do NOT ask
-"shall I save?" or otherwise re-prompt.** The moment the user chooses Save, just write
-the files:
+Writing files is the one action that **asks permission first.** When the user chooses
+Save, ask a short yes/no confirmation ("Save `<id>` as Markdown + Word?") — and only on
+"yes" write the files:
 
 1. Write the Markdown to `<id>-authoring-guide.md`.
 2. Build the Word doc:
@@ -242,10 +253,11 @@ the files:
    (Dependency-free, offline. Keep tables as GitHub pipe tables so they become real Word
    tables.)
 
-Same principle for every widget button — **the click starts the task immediately** (no
-"on it", no confirmation question): Generate → generate; Save → save; Check for updates →
-refresh. The only button that needs follow-up input is Edit (the user still types what to
-change). Never leave the user waiting on a confirmation after a click.
+If the user declines, leave it as an on-screen draft — don't write files.
+
+**Other buttons still run immediately** (no confirmation): Generate → generate;
+Check for updates → refresh. Edit waits for the user's typed changes. Only **Save**
+pauses for the yes/no permission.
 
 ### 6. Deliver (silently)
 
