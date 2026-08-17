@@ -5,7 +5,7 @@ description: >-
   (github.com/adobe-experience-league/exlm) — an Adobe EDS / Universal Editor site. It
   works against the EXLM project live from GitHub (no local checkout needed): it lists
   the EXLM blocks available (newest and recently-changed first), then generates a
-  content-authoring guide for any EXLM block — for both content authors and developers
+  content-authoring guide for any EXLM block — aimed at content authors
   — as a Markdown file and a Word .docx. Use this whenever the user wants to document,
   explain, or write a guide/README for one or more EXLM blocks / Universal Editor
   components, wants to know "what blocks can I use" / see the EXLM block catalog, asks
@@ -21,14 +21,12 @@ description: >-
 
 This skill documents the **Adobe Experience League EXLM project** — the Adobe EDS /
 Universal Editor site at `github.com/adobe-experience-league/exlm`. Two jobs: help a
-user **find** the right EXLM block, then **document** it well for two readers at once —
-a **content author** who needs to know what to fill in, and a **developer** who needs to
-know what the block does with it. The whole value is bridging those views: the field an
-author sees as "Heading" is the same row the developer's JS reads as
-`block.children[0]`.
+user **find** the right EXLM block, then write a clear **content-authoring guide** for it
+— aimed at the **content author** who needs to know what the block is for and what to
+fill in. Keep it practical and jargon-free; no developer/technical section.
 
 Per block you produce **two files**: a Markdown guide (commit next to the block) and a
-Word `.docx` (share with non-technical authors).
+Word `.docx` (share with authors).
 
 ## Welcome banner
 
@@ -40,7 +38,7 @@ it to the first response of the session — don't repeat it on every follow-up.
 📘  EXLM Block Guide
 ────────────────────────────────────────────
 Author-ready guides for the Adobe Experience League (EXLM) blocks — for content
-authors AND developers, as Markdown + Word. Pulled live from the EXLM project.
+authors, as Markdown + Word. Pulled live from the EXLM project.
 
   • "list the blocks"            → browse the EXLM catalog (newest / changed first)
   • "document the <name> block"  → full authoring guide (.md + .docx)
@@ -189,13 +187,14 @@ Picker behavior:
 
 The **"Check for updates"** button sits by the status strip.
 
-### 2. Extract the spec, then read the JS with it open
+### 2. Extract the spec (read the source only enough to describe authoring)
 
-Run `blocks.js show <id> --fresh` (the `--fresh` flag pulls the block's live js/css so
-the guide reflects the latest EXLM). Read `spec.source.js.content` and work out **what
-each content field becomes** in the DOM — which element, which class, what visual role.
-Fields are in the order the JS reads the rows (see `references/field-types.md`). For
-variants, find the matching CSS rule so you can describe what each option does.
+Run `blocks.js show <id> --fresh` (the `--fresh` flag pulls the block's live source so
+the guide reflects the latest EXLM). Use the spec's `content_fields`, `variants`, and
+`definition.template` to describe **what an author fills in and what each choice does on
+the page** — in plain language. You may glance at `spec.source.js`/`.css` only to get a
+field's or variant's *visual* effect right (e.g. what a Style option changes); don't
+document DOM/classes/code — the guide is author-facing only.
 
 ### 3. Handle conditional fields automatically (no prompt)
 
@@ -212,9 +211,9 @@ asked to choose a format. Otherwise proceed straight to writing.
 
 Write the guide following the template below (don't save files yet). Write for a smart
 reader who isn't steeped in EDS jargon: explain *why* an author reaches for this block,
-not just *that* it has fields. Keep author-facing sections free of code; put code detail
-in the Technical reference. Flag conditional fields with the default from step 3
-("**Shown only when** First CTA Type is Custom").
+not just *that* it has fields. Keep it entirely author-facing and free of code — **no
+Technical reference / DOM / resourceType section.** Flag conditional fields with the
+default from step 3 ("**Shown only when** First CTA Type is Custom").
 
 **Present the drafted guide itself as a rendered UI, not as plain markdown text in the
 response.** If a visualization/widget tool is available (e.g. `show_widget`), render the
@@ -298,26 +297,19 @@ field, in model order). Include the conditional presentation chosen in step 3:
 Then a **worked example** built from `definition.template` (the default content).
 
 ## Variants & options
-If `variants` exists, one row per option describing the visual effect (cross-referenced
-with the CSS), grouped by the option's `group`. If none, say so. Also cover any
-`select`/`boolean`/`radio-group` content fields that are configuration, not content.
+If `variants` exists, one row per option describing what it changes on the page, grouped
+by the option's `group`. If none, say so. Also cover any `select`/`boolean`/`radio-group`
+content fields that are configuration, not content.
 
-| Variant | Effect | CSS class |
-| --- | --- | --- |
-| <label> | <what it changes visually> | `<value>` |
-
-## Technical reference
-For developers:
-- **Files**: `blocks/<id>/<id>.js`, `.css`.
-- **Component id / resourceType**: from `definition`.
-- **Field → DOM mapping**: for each content field, the element/class the JS produces.
-- **Behavior**: notable JS logic (responsive, author-mode branches, async data,
-  conditional rendering, dependencies).
-- **Nesting**: placement/containment rules from `placements`.
+| Variant | Effect |
+| --- | --- |
+| <label> | <what it changes visually> |
 ```
 
-Adapt sensibly — if a block genuinely has no variants or no notable JS, say so briefly.
-The template is a spine, not a cage.
+Four author-facing sections only — **Overview & purpose**, **Authoring**, and
+**Variants & options** (plus the one-line summary). **Do not add a Technical reference
+or any DOM / resourceType / code section.** Adapt sensibly — if a block has no variants,
+say so briefly. The template is a spine, not a cage.
 
 ## Blocks without a model
 
